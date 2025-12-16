@@ -1,101 +1,117 @@
 import streamlit as st
-import random
 import base64
 
-# ---------------- PAGE CONFIG ----------------
+# ------------------ PAGE CONFIG ------------------
 st.set_page_config(
     page_title="DAIT College Assistant",
     page_icon="🎓",
-    layout="wide"
+    layout="centered"
 )
 
-# ---------------- BACKGROUND FUNCTION ----------------
+# ------------------ BACKGROUND IMAGE ------------------
 def set_background(image_file):
     with open(image_file, "rb") as f:
         encoded = base64.b64encode(f.read()).decode()
 
-    st.markdown(
-        f"""
-        <style>
-        .stApp {{
-            background-image: url("data:image/jpg;base64,{encoded}");
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-        }}
+    css = f"""
+    <style>
+    .stApp {{
+        background-image: url("data:image/jpg;base64,{encoded}");
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+    }}
+    .chat-box {{
+        background-color: rgba(255, 255, 255, 0.6);
+        padding: 20px;
+        border-radius: 12px;
+    }}
+    </style>
+    """
+    st.markdown(css, unsafe_allow_html=True)
 
-        .block-container {{
-            background-color: rgba(255, 255, 255, 0.6); /* 60% visible */
-            padding: 20px;
-            border-radius: 15px;
-        }}
-        </style>
-        """,
-        unsafe_allow_html=True
-    )
-
-# ✅ SET BACKGROUND
 set_background("background.jpg")
 
-# ---------------- TITLE ----------------
-st.title("🎓 DAIT College Assistant")
-st.write("Ask me anything about **Dhaanish Ahmed Institute of Technology (DAIT)**")
-
-# ---------------- KNOWLEDGE BASE ----------------
+# ------------------ COLLEGE DATA ------------------
 college_info = {
-    "about": "Dhaanish Ahmed Institute of Technology (DAIT) is located in Coimbatore, Tamil Nadu. It is AICTE approved and affiliated to Anna University.",
-    "location": "DAIT is located at Veerappanur, K.G.Chavadi, Coimbatore – 641105.",
-    "courses": "Courses include CSE, AI & DS, AIML, Cyber Security, Robotics, Biomedical, ECE, IT, and Food Technology.",
-    "hostel": "DAIT provides separate hostel facilities for boys and girls with good amenities.",
-    "placement": "DAIT has a placement cell that trains students and supports placements in reputed companies.",
-    "library": "DAIT has a central library with books, journals, and digital resources.",
-    "facilities": "Facilities include smart classrooms, labs, sports grounds, cafeteria, transport, and medical care.",
-    "admission": "Admissions are based on eligibility through TNEA counseling and merit.",
-    "contact": "Official website: https://dhaanish.com | Phone: +91 9176786000",
+    "name": "Dhaanish Ahmed Institute of Technology (DAIT)",
+    "location": "Coimbatore, Tamil Nadu",
+    "type": "Private Engineering College",
+    "courses": "B.E, B.Tech, M.E",
+    "departments": "CSE, AI&DS, ECE, EEE, Mechanical, Civil",
+    "facilities": "Library, Hostel, Transport, Labs, Sports, Canteen",
+    "placements": "Training & Placement Cell with good placement support",
+    "hostel": "Separate hostels for boys and girls",
+    "library": "Well-equipped digital library",
+    "contact": "https://dhaanish.com"
 }
 
-college_keywords = list(college_info.keys())
+college_keywords = [
+    "college", "dait", "course", "department", "placement",
+    "hostel", "library", "facility", "admission", "location"
+]
 
-greetings = ["hi", "hello", "hey", "how are you", "good morning", "good evening"]
+# ------------------ CHATBOT LOGIC ------------------
+def chatbot_reply(user_input):
+    text = user_input.lower()
 
-# ---------------- SESSION ----------------
+    # Greetings
+    if text in ["hi", "hello", "hey", "hai"]:
+        return "😊 Hello! Welcome to **DAIT College Assistant**. How can I help you today?"
+
+    # Name
+    if "name" in text:
+        return f"Our college name is **{college_info['name']}** 🎓"
+
+    if "location" in text:
+        return f"📍 DAIT is located in **{college_info['location']}**."
+
+    if "course" in text or "degree" in text:
+        return f"📘 Courses offered: **{college_info['courses']}**"
+
+    if "department" in text:
+        return f"🏫 Departments: **{college_info['departments']}**"
+
+    if "placement" in text:
+        return f"💼 Placements: {college_info['placements']}"
+
+    if "hostel" in text:
+        return f"🏠 Hostel: {college_info['hostel']}"
+
+    if "library" in text:
+        return f"📚 Library: {college_info['library']}"
+
+    if "facility" in text:
+        return f"🏀 Facilities: {college_info['facilities']}"
+
+    # Check if college-related keyword exists
+    for word in college_keywords:
+        if word in text:
+            return "ℹ️ Please ask clearly about **DAIT College**."
+
+    # Not related to college
+    return "❌ I can answer only **college-related questions**. Please ask about **DAIT College**."
+
+# ------------------ UI ------------------
+st.markdown("<div class='chat-box'>", unsafe_allow_html=True)
+
+st.title("🎓 DAIT College Assistant")
+st.caption("Ask anything about Dhaanish Ahmed Institute of Technology")
+
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
-# ---------------- DISPLAY CHAT ----------------
-for msg in st.session_state.messages:
-    with st.chat_message(msg["role"]):
-        st.markdown(msg["content"])
+for role, msg in st.session_state.messages:
+    st.chat_message(role).write(msg)
 
-# ---------------- USER INPUT ----------------
-user_input = st.chat_input("Type your message here...")
+user_input = st.chat_input("Type your question about DAIT...")
 
 if user_input:
-    st.session_state.messages.append({"role": "user", "content": user_input})
+    st.session_state.messages.append(("user", user_input))
+    reply = chatbot_reply(user_input)
+    st.session_state.messages.append(("assistant", reply))
 
-    text = user_input.lower()
-    reply = ""
+    st.chat_message("user").write(user_input)
+    st.chat_message("assistant").write(reply)
 
-    # Friendly greeting
-    if any(greet in text for greet in greetings):
-        reply = random.choice([
-            "Hello! 😊 Welcome to DAIT College Assistant!",
-            "Hi there! 👋 How can I help you about DAIT?",
-            "Hey! 😄 Ask me anything about DAIT College."
-        ])
-    else:
-        found = False
-        for key in college_keywords:
-            if key in text:
-                reply = college_info[key]
-                found = True
-                break
-
-        if not found:
-            reply = (
-                "❗ I can answer only questions related to **DAIT College**.\n\n"
-                "Please ask about courses, hostel, placements, admissions, facilities, etc."
-            )
-
-    st.session_state.messages.append({"role": "assistant", "content": reply})
-    st.rerun()
+st.markdown("</div>", unsafe_allow_html=True)
