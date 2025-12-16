@@ -8,38 +8,28 @@ st.set_page_config(
     layout="wide"
 )
 
-# ---------------- CUSTOM CSS ----------------
+# ---------------- BACKGROUND & STYLE ----------------
 st.markdown("""
 <style>
-body {
+.stApp {
     background-image: url("https://images.unsplash.com/photo-1524995997946-a1c2e315a42f");
     background-size: cover;
+    background-position: center;
     background-attachment: fixed;
-}
-
-.stApp {
     backdrop-filter: blur(4px); /* 25% blur */
-    background-color: rgba(0, 0, 0, 0.25);
 }
 
 .chat-box {
-    background-color: rgba(255,255,255,0.92);
-    padding: 10px;
-    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.92);
+    padding: 12px;
+    border-radius: 12px;
 }
 </style>
 """, unsafe_allow_html=True)
 
 # ---------------- TITLE ----------------
-st.markdown(
-    "<h1 style='text-align:center;'>🎓 DAIT Assistant</h1>",
-    unsafe_allow_html=True
-)
-
-st.markdown(
-    "<p style='text-align:center;'>Your friendly college buddy 😄</p>",
-    unsafe_allow_html=True
-)
+st.markdown("<h1 style='text-align:center;'>🎓 DAIT Assistant</h1>", unsafe_allow_html=True)
+st.markdown("<p style='text-align:center;'>Your friendly college buddy 😄</p>", unsafe_allow_html=True)
 
 # ---------------- SESSION STATE ----------------
 if "messages" not in st.session_state:
@@ -48,34 +38,37 @@ if "messages" not in st.session_state:
 if "name" not in st.session_state:
     st.session_state.name = None
 
-# ---------------- HELPER FUNCTION ----------------
+# ---------------- BOT LOGIC ----------------
 def bot_reply(user_msg):
     msg = user_msg.lower()
 
+    # Ask name first
     if st.session_state.name is None:
         st.session_state.name = user_msg.strip()
-        return f"Nice to meet you, **{st.session_state.name}** 😄  
-How can I help you today?"
+        return f"Nice to meet you, {st.session_state.name}! 😄 How can I help you today?"
 
+    # Greetings
     if "hello" in msg or "hi" in msg:
         return random.choice([
             f"Hey {st.session_state.name}! 👋",
             f"Hello {st.session_state.name}! 😊",
-            f"Hi buddy 😄 What’s up?"
+            "Hi there! How’s your day going? 😄"
         ])
 
+    # College info
     if "college" in msg or "dait" in msg:
         return (
             "🏫 **Dhaanish Ahmed Institute of Technology (DAIT)** is located in Coimbatore.\n\n"
-            "• AICTE approved\n"
-            "• Anna University affiliated\n"
-            "• Strong focus on Engineering & Technology\n\n"
-            "Want details about departments, admissions or placements? 😉"
+            "• AICTE Approved\n"
+            "• Anna University Affiliated\n"
+            "• Excellent learning environment\n\n"
+            "Want to know about courses, placements or hostels? 😉"
         )
 
+    # Courses
     if "course" in msg or "department" in msg:
         return (
-            "📚 DAIT offers:\n"
+            "📚 **Courses Offered at DAIT:**\n"
             "• CSE\n"
             "• AI & DS\n"
             "• ECE\n"
@@ -84,16 +77,21 @@ How can I help you today?"
             "Which department are you interested in?"
         )
 
+    # Placements
     if "placement" in msg:
         return (
-            "💼 DAIT provides placement training, internships, and industry exposure.\n\n"
-            "Skills + confidence = Success 🚀"
+            "💼 DAIT focuses on placements with:\n"
+            "• Training programs\n"
+            "• Internship support\n"
+            "• Industry exposure\n\n"
+            "Skills + Confidence = Success 🚀"
         )
 
+    # Bye
     if "bye" in msg:
-        return f"Bye {st.session_state.name}! 👋  
-Come back anytime 😄"
+        return f"Bye {st.session_state.name}! 👋 Come back anytime 😄"
 
+    # Default
     return random.choice([
         "Hmm 🤔 tell me more!",
         "Interesting 😄 go on...",
@@ -101,18 +99,17 @@ Come back anytime 😄"
         "That sounds cool!"
     ])
 
-# ---------------- CHAT DISPLAY ----------------
+# ---------------- DISPLAY CHAT ----------------
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
 
 # ---------------- USER INPUT ----------------
-user_input = st.chat_input(
-    "Type your message here..." if st.session_state.name else "Hey! What's your name? 😊"
-)
+prompt = "Hey! What's your name? 😊" if st.session_state.name is None else "Type your message here..."
+user_input = st.chat_input(prompt)
 
 if user_input:
-    # Show user message
+    # Store user message
     st.session_state.messages.append({
         "role": "user",
         "content": user_input
