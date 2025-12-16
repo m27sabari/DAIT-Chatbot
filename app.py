@@ -54,7 +54,7 @@ with st.container():
         with st.chat_message("assistant"):
             if st.session_state.name is None:
                 st.session_state.name = user_input.strip()
-                reply = f"Nice to meet you, **{st.session_state.name}** 😄  
+                reply = f"Nice to meet you, **{st.session_state.name}** 😄" 
 I’m your friendly **DAIT Assistant** 🎓  
 Ask me anything about the college, courses, campus life or just chat!"
             else:
