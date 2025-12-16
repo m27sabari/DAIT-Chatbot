@@ -1,85 +1,133 @@
 import streamlit as st
-import os
-from openai import OpenAI
+import random
 
-# Page config
+# ---------------- PAGE CONFIG ----------------
 st.set_page_config(
     page_title="DAIT Assistant",
     page_icon="🎓",
     layout="wide"
 )
 
-# Background image + blur control
+# ---------------- CUSTOM CSS ----------------
 st.markdown("""
 <style>
-.stApp {
-    background-image: url("https://images.unsplash.com/photo-1523050854058-8df90110c9f1");
+body {
+    background-image: url("https://images.unsplash.com/photo-1524995997946-a1c2e315a42f");
     background-size: cover;
-    background-position: center;
+    background-attachment: fixed;
 }
-.chat-container {
-    backdrop-filter: blur(4px);
-    background: rgba(0,0,0,0.55);
-    padding: 20px;
-    border-radius: 15px;
+
+.stApp {
+    backdrop-filter: blur(4px); /* 25% blur */
+    background-color: rgba(0, 0, 0, 0.25);
+}
+
+.chat-box {
+    background-color: rgba(255,255,255,0.92);
+    padding: 10px;
+    border-radius: 10px;
 }
 </style>
 """, unsafe_allow_html=True)
 
-# OpenAI client
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+# ---------------- TITLE ----------------
+st.markdown(
+    "<h1 style='text-align:center;'>🎓 DAIT Assistant</h1>",
+    unsafe_allow_html=True
+)
 
-# Session state
+st.markdown(
+    "<p style='text-align:center;'>Your friendly college buddy 😄</p>",
+    unsafe_allow_html=True
+)
+
+# ---------------- SESSION STATE ----------------
 if "messages" not in st.session_state:
     st.session_state.messages = []
+
 if "name" not in st.session_state:
     st.session_state.name = None
 
-st.title("🎓 DAIT Assistant")
+# ---------------- HELPER FUNCTION ----------------
+def bot_reply(user_msg):
+    msg = user_msg.lower()
 
-with st.container():
-    st.markdown('<div class="chat-container">', unsafe_allow_html=True)
+    if st.session_state.name is None:
+        st.session_state.name = user_msg.strip()
+        return f"Nice to meet you, **{st.session_state.name}** 😄  
+How can I help you today?"
 
-    for msg in st.session_state.messages:
-        with st.chat_message(msg["role"]):
-            st.markdown(msg["content"])
+    if "hello" in msg or "hi" in msg:
+        return random.choice([
+            f"Hey {st.session_state.name}! 👋",
+            f"Hello {st.session_state.name}! 😊",
+            f"Hi buddy 😄 What’s up?"
+        ])
 
-    user_input = st.chat_input("Type your message...")
-
-    if user_input:
-        st.session_state.messages.append(
-            {"role": "user", "content": user_input}
+    if "college" in msg or "dait" in msg:
+        return (
+            "🏫 **Dhaanish Ahmed Institute of Technology (DAIT)** is located in Coimbatore.\n\n"
+            "• AICTE approved\n"
+            "• Anna University affiliated\n"
+            "• Strong focus on Engineering & Technology\n\n"
+            "Want details about departments, admissions or placements? 😉"
         )
 
-        with st.chat_message("assistant"):
-            if st.session_state.name is None:
-                st.session_state.name = user_input.strip()
-                reply = f"Nice to meet you, **{st.session_state.name}** 😄" 
-I’m your friendly **DAIT Assistant** 🎓  
-Ask me anything about the college, courses, campus life or just chat!"
-            else:
-                system_prompt = f"""
-You are DAIT Assistant.
-You talk friendly, funny, polite and human-like.
-You help students of Dhaanish Ahmed Institute of Technology.
-Use simple English, emojis sometimes, and sound natural.
-User name: {st.session_state.name}
-"""
+    if "course" in msg or "department" in msg:
+        return (
+            "📚 DAIT offers:\n"
+            "• CSE\n"
+            "• AI & DS\n"
+            "• ECE\n"
+            "• Mechanical\n"
+            "• Civil\n\n"
+            "Which department are you interested in?"
+        )
 
-                response = client.chat.completions.create(
-                    model="gpt-4o-mini",
-                    messages=[
-                        {"role": "system", "content": system_prompt},
-                        *st.session_state.messages
-                    ],
-                    temperature=0.7
-                )
+    if "placement" in msg:
+        return (
+            "💼 DAIT provides placement training, internships, and industry exposure.\n\n"
+            "Skills + confidence = Success 🚀"
+        )
 
-                reply = response.choices[0].message.content
+    if "bye" in msg:
+        return f"Bye {st.session_state.name}! 👋  
+Come back anytime 😄"
 
-            st.markdown(reply)
-            st.session_state.messages.append(
-                {"role": "assistant", "content": reply}
-            )
+    return random.choice([
+        "Hmm 🤔 tell me more!",
+        "Interesting 😄 go on...",
+        "I’m listening 👂",
+        "That sounds cool!"
+    ])
 
-    st.markdown("</div>", unsafe_allow_html=True)
+# ---------------- CHAT DISPLAY ----------------
+for message in st.session_state.messages:
+    with st.chat_message(message["role"]):
+        st.markdown(message["content"])
+
+# ---------------- USER INPUT ----------------
+user_input = st.chat_input(
+    "Type your message here..." if st.session_state.name else "Hey! What's your name? 😊"
+)
+
+if user_input:
+    # Show user message
+    st.session_state.messages.append({
+        "role": "user",
+        "content": user_input
+    })
+
+    with st.chat_message("user"):
+        st.markdown(user_input)
+
+    # Bot response
+    reply = bot_reply(user_input)
+
+    st.session_state.messages.append({
+        "role": "assistant",
+        "content": reply
+    })
+
+    with st.chat_message("assistant"):
+        st.markdown(reply)
