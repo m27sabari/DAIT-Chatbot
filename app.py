@@ -1,5 +1,7 @@
 import streamlit as st
 import random
+import base64
+from datetime import datetime
 
 # ---------------- PAGE CONFIG ----------------
 st.set_page_config(
@@ -8,123 +10,159 @@ st.set_page_config(
     layout="wide"
 )
 
-# ---------------- BACKGROUND & STYLE ----------------
-st.markdown("""
-<style>
-.stApp {
-    background-image: url("https://images.unsplash.com/photo-1524995997946-a1c2e315a42f");
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-    backdrop-filter: blur(4px); /* 25% blur */
+# ---------------- BACKGROUND ----------------
+def set_background(image_file):
+    with open(image_file, "rb") as f:
+        encoded = base64.b64encode(f.read()).decode()
+
+    st.markdown(
+        f"""
+        <style>
+        .stApp {{
+            background-image: url("data:image/jpg;base64,{encoded}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }}
+
+        .block-container {{
+            padding-top: 1rem;
+        }}
+
+        .stChatMessage {{
+            background: rgba(0,0,0,0.6);
+            border-radius: 12px;
+            padding: 12px;
+            color: white;
+        }}
+
+        h1, h3, h4, p, span {{
+            color: white !important;
+            text-shadow: 1px 1px 3px black;
+        }}
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
+
+set_background("background.jpg")  # put image in same folder
+
+# ---------------- HEADER ----------------
+st.markdown("<h1>🎓 DAIT Assistant</h1>", unsafe_allow_html=True)
+st.markdown("<h4>Dhaanish Ahmed Institute of Technology, Coimbatore</h4>", unsafe_allow_html=True)
+st.markdown("---")
+
+# ---------------- TIME GREETING ----------------
+hour = datetime.now().hour
+if hour < 12:
+    greet = "Good Morning ☀️"
+elif hour < 18:
+    greet = "Good Afternoon 🌤️"
+else:
+    greet = "Good Evening 🌙"
+
+# ---------------- KNOWLEDGE BASE ----------------
+college_info = {
+    "about": [
+        "about", "college", "dait", "institute"
+    ],
+    "location": [
+        "location", "where", "place", "address"
+    ],
+    "courses": [
+        "courses", "departments", "branch", "degree"
+    ],
+    "hostel": [
+        "hostel", "stay", "accommodation"
+    ],
+    "placement": [
+        "placement", "job", "company", "career"
+    ],
+    "facilities": [
+        "facilities", "library", "lab", "sports"
+    ],
+    "admission": [
+        "admission", "join", "apply"
+    ],
+    "timing": [
+        "timing", "college time", "working hours"
+    ]
 }
 
-.chat-box {
-    background-color: rgba(255, 255, 255, 0.92);
-    padding: 12px;
-    border-radius: 12px;
+answers = {
+    "about": "Dhaanish Ahmed Institute of Technology (DAIT) is an engineering college in Coimbatore, Tamil Nadu.",
+    "location": "DAIT is located in Coimbatore, Tamil Nadu.",
+    "courses": "DAIT offers B.E / B.Tech programs like CSE, AI & DS, ECE, EEE and Mechanical Engineering.",
+    "hostel": "DAIT provides separate hostel facilities for boys and girls.",
+    "placement": "The placement cell supports students with training and job opportunities.",
+    "facilities": "Facilities include smart classrooms, labs, library, sports, cafeteria and transport.",
+    "admission": "Admissions are done through counseling based on eligibility.",
+    "timing": "College working hours are generally from 9:00 AM to 4:30 PM."
 }
-</style>
-""", unsafe_allow_html=True)
 
-# ---------------- TITLE ----------------
-st.markdown("<h1 style='text-align:center;'>🎓 DAIT Assistant</h1>", unsafe_allow_html=True)
-st.markdown("<p style='text-align:center;'>Your friendly college buddy 😄</p>", unsafe_allow_html=True)
+greetings = ["hi", "hello", "hey", "good morning", "good evening"]
 
 # ---------------- SESSION STATE ----------------
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
-if "name" not in st.session_state:
-    st.session_state.name = None
-
-# ---------------- BOT LOGIC ----------------
-def bot_reply(user_msg):
-    msg = user_msg.lower()
-
-    # Ask name first
-    if st.session_state.name is None:
-        st.session_state.name = user_msg.strip()
-        return f"Nice to meet you, {st.session_state.name}! 😄 How can I help you today?"
-
-    # Greetings
-    if "hello" in msg or "hi" in msg:
-        return random.choice([
-            f"Hey {st.session_state.name}! 👋",
-            f"Hello {st.session_state.name}! 😊",
-            "Hi there! How’s your day going? 😄"
-        ])
-
-    # College info
-    if "college" in msg or "dait" in msg:
-        return (
-            "🏫 **Dhaanish Ahmed Institute of Technology (DAIT)** is located in Coimbatore.\n\n"
-            "• AICTE Approved\n"
-            "• Anna University Affiliated\n"
-            "• Excellent learning environment\n\n"
-            "Want to know about courses, placements or hostels? 😉"
-        )
-
-    # Courses
-    if "course" in msg or "department" in msg:
-        return (
-            "📚 **Courses Offered at DAIT:**\n"
-            "• CSE\n"
-            "• AI & DS\n"
-            "• ECE\n"
-            "• Mechanical\n"
-            "• Civil\n\n"
-            "Which department are you interested in?"
-        )
-
-    # Placements
-    if "placement" in msg:
-        return (
-            "💼 DAIT focuses on placements with:\n"
-            "• Training programs\n"
-            "• Internship support\n"
-            "• Industry exposure\n\n"
-            "Skills + Confidence = Success 🚀"
-        )
-
-    # Bye
-    if "bye" in msg:
-        return f"Bye {st.session_state.name}! 👋 Come back anytime 😄"
-
-    # Default
-    return random.choice([
-        "Hmm 🤔 tell me more!",
-        "Interesting 😄 go on...",
-        "I’m listening 👂",
-        "That sounds cool!"
-    ])
-
-# ---------------- DISPLAY CHAT ----------------
-for message in st.session_state.messages:
-    with st.chat_message(message["role"]):
-        st.markdown(message["content"])
-
-# ---------------- USER INPUT ----------------
-prompt = "Hey! What's your name? 😊" if st.session_state.name is None else "Type your message here..."
-user_input = st.chat_input(prompt)
-
-if user_input:
-    # Store user message
-    st.session_state.messages.append({
-        "role": "user",
-        "content": user_input
-    })
-
-    with st.chat_message("user"):
-        st.markdown(user_input)
-
-    # Bot response
-    reply = bot_reply(user_input)
-
+# ---------------- INITIAL MESSAGE ----------------
+if len(st.session_state.messages) == 0:
     st.session_state.messages.append({
         "role": "assistant",
-        "content": reply
+        "content": f"{greet} 😊\n\nI am the **DAIT Assistant**.\nAsk me anything about the college."
     })
 
-    with st.chat_message("assistant"):
-        st.markdown(reply)
+# ---------------- DISPLAY CHAT ----------------
+for msg in st.session_state.messages:
+    with st.chat_message(msg["role"]):
+        st.write(msg["content"])
+
+# ---------------- QUICK BUTTONS (FIXED) ----------------
+st.markdown("### 🔘 Quick Questions")
+cols = st.columns(5)
+buttons = ["Courses", "Hostel", "Placement", "Facilities", "Location"]
+
+for i, btn in enumerate(buttons):
+    with cols[i]:
+        if st.button(btn, key=btn):
+            st.session_state.messages.append({
+                "role": "user",
+                "content": btn.lower()
+            })
+            st.experimental_rerun()
+
+# ---------------- USER INPUT ----------------
+user_input = st.chat_input("Ask about DAIT college...")
+
+if user_input:
+    user_text = user_input.lower()
+    st.session_state.messages.append({"role": "user", "content": user_input})
+
+    reply = None
+
+    # Greeting check
+    if any(greet in user_text for greet in greetings):
+        reply = random.choice([
+            "Hello 😊 How can I help you about DAIT?",
+            "Hi there! Ask me anything about DAIT 🎓",
+            "Hey! I’m here to help you with college info 👍"
+        ])
+
+    # College intent check
+    if reply is None:
+        for key, keywords in college_info.items():
+            if any(word in user_text for word in keywords):
+                reply = answers[key]
+                break
+
+    # Not college related
+    if reply is None:
+        reply = (
+            "I can help only with **DAIT college information** 😊\n"
+            "Please ask about courses, hostel, placement, facilities or admission."
+        )
+
+    st.session_state.messages.append({"role": "assistant", "content": reply})
+    st.experimental_rerun()
