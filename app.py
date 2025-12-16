@@ -1,21 +1,15 @@
 import streamlit as st
+import os
 from openai import OpenAI
 
-# ---------------- CONFIG ----------------
+# Page config
 st.set_page_config(
     page_title="DAIT Assistant",
     page_icon="🎓",
     layout="wide"
 )
 
-import os
-from openai import OpenAI
-
-client = OpenAI(
-    api_key=os.getenv("OPENAI_API_KEY")
-)
-
-# ---------------- BACKGROUND ----------------
+# Background image + blur control
 st.markdown("""
 <style>
 .stApp {
@@ -23,60 +17,69 @@ st.markdown("""
     background-size: cover;
     background-position: center;
 }
-.chat-box {
-    background: rgba(255,255,255,0.75);
-    backdrop-filter: blur(5px);
-    padding: 15px;
+.chat-container {
+    backdrop-filter: blur(4px);
+    background: rgba(0,0,0,0.55);
+    padding: 20px;
     border-radius: 15px;
 }
 </style>
 """, unsafe_allow_html=True)
 
-# ---------------- TITLE ----------------
-st.markdown("<h1 style='text-align:center;'>🎓 DAIT Assistant</h1>", unsafe_allow_html=True)
+# OpenAI client
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
-# ---------------- SESSION ----------------
+# Session state
 if "messages" not in st.session_state:
     st.session_state.messages = []
-    st.session_state.user_name = None
+if "name" not in st.session_state:
+    st.session_state.name = None
 
-# ---------------- CHAT DISPLAY ----------------
+st.title("🎓 DAIT Assistant")
+
 with st.container():
+    st.markdown('<div class="chat-container">', unsafe_allow_html=True)
+
     for msg in st.session_state.messages:
-        role = "🧑‍🎓 You" if msg["role"] == "user" else "🤖 DAIT Assistant"
-        st.markdown(f"""
-        <div class="chat-box">
-        <b>{role}:</b><br>{msg["content"]}
-        </div><br>
-        """, unsafe_allow_html=True)
+        with st.chat_message(msg["role"]):
+            st.markdown(msg["content"])
 
-# ---------------- INPUT ----------------
-user_input = st.chat_input("Type your message here...")
+    user_input = st.chat_input("Type your message...")
 
-# ---------------- LOGIC ----------------
-if user_input:
-    st.session_state.messages.append({"role": "user", "content": user_input})
-
-    if st.session_state.user_name is None:
-        st.session_state.user_name = user_input.strip()
-        bot_reply = f"Nice to meet you, {st.session_state.user_name}! 😄 How can I help you today?"
-    else:
-        system_prompt = f"""
-You are DAIT Assistant, a funny, friendly, human-like AI.
-You help students of Dhaanish Ahmed Institute of Technology.
-Talk casually, warmly, and clearly.
-User name: {st.session_state.user_name}
-"""
-
-        response = client.chat.completions.create(
-            model="gpt-4o-mini",
-            messages=[
-                {"role": "system", "content": system_prompt},
-                *st.session_state.messages
-            ]
+    if user_input:
+        st.session_state.messages.append(
+            {"role": "user", "content": user_input}
         )
 
-        bot_reply = response.choices[0].message.content
+        with st.chat_message("assistant"):
+            if st.session_state.name is None:
+                st.session_state.name = user_input.strip()
+                reply = f"Nice to meet you, **{st.session_state.name}** 😄  
+I’m your friendly **DAIT Assistant** 🎓  
+Ask me anything about the college, courses, campus life or just chat!"
+            else:
+                system_prompt = f"""
+You are DAIT Assistant.
+You talk friendly, funny, polite and human-like.
+You help students of Dhaanish Ahmed Institute of Technology.
+Use simple English, emojis sometimes, and sound natural.
+User name: {st.session_state.name}
+"""
 
-    st.session_state.messages.append({"role": "assistant", "content": bot_reply})
-    st.rerun()
+                response = client.chat.completions.create(
+                    model="gpt-4o-mini",
+                    messages=[
+                        {"role": "system", "content": system_prompt},
+                        *st.session_state.messages
+                    ],
+                    temperature=0.7
+                )
+
+                reply = response.choices[0].message.content
+
+            st.markdown(reply)
+            st.session_state.messages.append(
+                {"role": "assistant", "content": reply}
+            )
+
+    st.markdown("</div>", unsafe_allow_html=True)
