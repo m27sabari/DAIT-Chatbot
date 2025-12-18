@@ -35,13 +35,13 @@ set_background("background.jpg")
 # ------------------ COLLEGE DATA ------------------
 college_info = {
     "name": "Dhaanish Ahmed Institute of Technology (DAIT)",
-    "location": "Coimbatore, Tamil Nadu",
+    "location": "KG Chavadi, Coimbatore, Tamil Nadu",
     "type": "Private Engineering College",
-    "courses": "B.E, B.Tech, M.E",
-    "departments": "CSE, AI&DS, ECE, EEE, Mechanical, Civil",
+    "courses": "B.E, B.Tech",
+    "departments": "CSE, AI&DS, ECE, AI&ML, BME, R&A, FOOD TECH, IT",
     "facilities": "Library, Hostel, Transport, Labs, Sports, Canteen",
     "placements": "Training & Placement Cell with good placement support",
-    "hostel": "Separate hostels for boys and girls",
+    "hostel": "Separate hostels for boys and girls with Good WIFI facilities",
     "library": "Well-equipped digital library",
     "contact": "https://dhaanish.com"
 }
