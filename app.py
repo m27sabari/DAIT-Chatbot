@@ -45,7 +45,7 @@ college_info = {
     "admission": "Admissions are through Government Quota and Management Quota.",
     "discipline": "Strict discipline is maintained for a safe learning environment.",
     "ragging": "Zero-tolerance anti-ragging policy is followed.",
-    "medical": "Basic medical and first-aid facilities are available on campus.",
+    "medical": "Basic medical and first-aid facilities are available on campus and we can reach Hospitals in few Minuties.",
     "reach": "From Coimbatore Gandhipuram or Ukkadam bus stand, take bus No. 96 or 48.",
     "scholarship": "Government and management scholarships are available.",
     "eligibility": "12th or Diploma with required subjects as per Anna University norms.",
@@ -71,58 +71,58 @@ def chatbot_reply(user_input):
         return college_info["assistant"]
 
     if "college name" in text or "dait" in text:
-        return f"🎓 **{college_info['college_name']}**"
+        return f"🎓  **{college_info['college_name']}**"
 
     if "location" in text:
-        return f"📍 Location: {college_info['location']}"
+        return f"📍 Location:  {college_info['location']}"
 
     if "course" in text or "degree" in text:
-        return f"📘 Courses Offered: {college_info['courses']}"
+        return f"📘 Courses Offered:  {college_info['courses']}"
 
     if "department" in text:
-        return f"🏫 Departments: {college_info['departments']}"
+        return f"🏫 Departments:  {college_info['departments']}"
 
     if "placement" in text:
-        return f"💼 Placements: {college_info['placements']}"
+        return f"💼 Placements:  {college_info['placements']}"
 
     if "hostel" in text:
-        return f"🏠 Hostel: {college_info['hostel']}"
+        return f"🏠 Hostel:  {college_info['hostel']}"
 
     if "library" in text:
-        return f"📚 Library: {college_info['library']}"
+        return f"📚 Library:  {college_info['library']}"
 
     if "facility" in text:
-        return f"🏀 Facilities: {college_info['facilities']}"
+        return f"🏀 Facilities:  {college_info['facilities']}"
 
     if "fee" in text:
-        return f"💰 Fees: {college_info['fees']}"
+        return f"💰 Fees:  {college_info['fees']}"
 
     if "admission" in text or "join" in text:
-        return f"📝 Admission: {college_info['admission']}"
+        return f"📝 Admission:  {college_info['admission']}"
 
     if "scholarship" in text:
-        return f"🎓 Scholarship: {college_info['scholarship']}"
+        return f"🎓 Scholarship:  {college_info['scholarship']}"
 
     if "contact" in text:
-        return f"📞 Contact: {college_info['contact']}"
+        return f"📞 Contact:  {college_info['contact']}"
 
     if "reach" in text:
-        return f"🚌 Reach: {college_info['reach']}"
+        return f"🚌 Reach:  {college_info['reach']}"
 
     if "medical" in text:
-        return f"🏥 Medical: {college_info['medical']}"
+        return f"🏥 Medical:  {college_info['medical']}"
 
     if "eligibility" in text:
-        return f"🧑‍🎓 Eligibility: {college_info['eligibility']}"
+        return f"🧑‍🎓 Eligibility:  {college_info['eligibility']}"
 
     if "ragging" in text:
-        return f"😠 Ragging: {college_info['ragging']}"
+        return f"😠 Ragging:  {college_info['ragging']}"
 
     if "discipline" in text:
-        return f"🧑‍💼 Discipline: {college_info['discpline']}"
+        return f"🧑‍💼 Discipline:  {college_info['discpline']}"
 
     if "located" in text:
-        return f"📍 Location: {college_info['location']}"
+        return f"📍 Location:  {college_info['location']}"
 
     return "❌ I can answer only **DAIT College-related questions**."
 
