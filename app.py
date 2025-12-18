@@ -111,7 +111,7 @@ college_info = {
 def chatbot_reply(user_input):
     text = user_input.lower()
     if "about" in text or "college details" in text or "tell me about" in text or "brief" in text:
-    return f"ℹ️ {college_info['about']}"
+        return f"ℹ️ {college_info['about']}"
 
     if text in ["hi", "hello", "hey", "hai"]:
         return "😊 Hello! Welcome to **DAIT College Assistant**."
