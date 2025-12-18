@@ -106,6 +106,24 @@ def chatbot_reply(user_input):
     if "contact" in text:
         return f"📞 Contact: {college_info['contact']}"
 
+    if "reach" in text:
+        return f"🚌 Reach: {college_info['reach']}"
+
+    if "medical" in text:
+        return f"🏥 Medical: {college_info['medical']}"
+
+    if "eligibility" in text:
+        return f"🧑‍🎓 Eligibility: {college_info['eligibility']}"
+
+    if "ragging" in text:
+        return f"😠 Ragging: {college_info['ragging']}"
+
+    if "discipline" in text:
+        return f"🧑‍💼 Discipline: {college_info['discpline']}"
+
+    if "located" in text:
+        return f"📍 Location: {college_info['location']}"
+
     return "❌ I can answer only **DAIT College-related questions**."
 
 # ------------------ UI ------------------
