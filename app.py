@@ -39,6 +39,15 @@ set_background("background.jpg")
 
 # ------------------ COLLEGE DATA ------------------
 college_info = {
+    "about": (
+    "Dhaanish Ahmed Institute of Technology (DAIT), Coimbatore, is a private engineering "
+    "college approved by AICTE and affiliated to Anna University. The institution offers "
+    "industry-oriented undergraduate and postgraduate programs with a strong focus on "
+    "academic excellence, innovation, discipline, and holistic student development. "
+    "DAIT provides modern infrastructure, experienced faculty, strong placement support, "
+    "and industry collaborations to prepare students for successful careers."
+),
+
     "college_name": "Dhaanish Ahmed Institute of Technology (DAIT)",
     "assistant": "I am your DAIT College Assistant. I support English, Tamil, and Malayalam. How can I help you?",
 
@@ -101,6 +110,8 @@ college_info = {
 # ------------------ CHATBOT LOGIC ------------------
 def chatbot_reply(user_input):
     text = user_input.lower()
+    if "about" in text or "college details" in text or "tell me about" in text or "brief" in text:
+    return f"ℹ️ {college_info['about']}"
 
     if text in ["hi", "hello", "hey", "hai"]:
         return "😊 Hello! Welcome to **DAIT College Assistant**."
