@@ -27,7 +27,7 @@ def set_background(image_file):
         background-attachment: fixed;
     }}
     .chat-box {{
-        background-color: rgba(255, 255, 255, 0.7);
+        background-color: rgba(255, 255, 255, 0.8);
         padding: 20px;
         border-radius: 12px;
     }}
@@ -40,24 +40,62 @@ set_background("background.jpg")
 # ------------------ COLLEGE DATA ------------------
 college_info = {
     "college_name": "Dhaanish Ahmed Institute of Technology (DAIT)",
-    "assistant": "I am your DAIT College Assistant. How can I help you?",
-    "fees": "Fee structure varies by course. Please contact the admission office.",
-    "admission": "Admissions are through Government Quota and Management Quota.",
-    "discipline": "Strict discipline is maintained for a safe learning environment.",
-    "ragging": "Zero-tolerance anti-ragging policy is followed.",
-    "medical": "Basic medical and first-aid facilities are available on campus and we can reach Hospitals in few Minuties.",
-    "reach": "From Coimbatore Gandhipuram or Ukkadam bus stand, take bus No. 96 or 48.",
-    "scholarship": "Government and management scholarships are available.",
-    "eligibility": "12th or Diploma with required subjects as per Anna University norms.",
-    "location": "KG Chavadi, Coimbatore, Tamil Nadu",
-    "type": "Private Engineering College",
-    "courses": "B.E, B.Tech",
-    "departments": "CSE, AI&DS, ECE, AI&ML, BME, Robotics & Automation, Food Technology, IT",
-    "facilities": "Library, Hostel, Transport, Labs, Sports, Canteen",
-    "placements": "Dedicated Training & Placement Cell with good placement support",
-    "hostel": "Separate hostels for boys and girls with WiFi",
-    "library": "Well-equipped digital library",
-    "contact": "Website: https://dhaanish.com | Phone & Email available on official site"
+    "assistant": "I am your DAIT College Assistant. I support English, Tamil, and Malayalam. How can I help you?",
+
+    "location": "Dhaanish Avenue, Veerappanur, K.G. Chavadi, Coimbatore – 641105, Tamil Nadu",
+    "type": "Private Engineering College affiliated to Anna University and approved by AICTE",
+
+    "courses": "B.E / B.Tech – CSE, AI & DS, AI & ML, ECE, IT, Biomedical Engineering, Robotics & Automation, Food Technology",
+    "pg_courses": "M.E, MBA, MCA (subject to availability)",
+    "duration": "B.E / B.Tech courses are 4 years in duration",
+
+    "eligibility": "10+2 with Physics, Chemistry, and Mathematics as per Anna University norms. Lateral entry for diploma holders.",
+    "admission": "Admissions through TNEA counseling and Management Quota.",
+    "documents": "10th & 12th mark sheets, Transfer Certificate, Community Certificate, Aadhar ID, passport-size photos.",
+
+    "fees": "Fee structure varies by course and quota. Please contact the Admission Office.",
+    "scholarship": "Government and management merit-based scholarships available.",
+
+    "departments": "CSE, AI & DS, AI & ML, ECE, IT, Biomedical Engineering, Robotics & Automation, Food Technology",
+
+    "attendance": "Minimum 75% attendance is mandatory as per Anna University norms.",
+    "exam_rules": "All examinations are conducted as per Anna University regulations.",
+
+    "placements": "Dedicated Training & Placement Cell with strong industry support.",
+    "packages": "Highest package: 25 LPA | Average package: 9 LPA",
+    "companies": (
+        "Major recruiters include Wipro, Hexaware, TCS, Zoho, Emerson, Quest Global, "
+        "Tech Mahindra, Cognizant (CTS), Avasoft, Apollo Tyres. "
+        "Industry collaborations with Bosch, Renault Nissan, and Ashok Leyland."
+    ),
+
+    "internship": "Internship and industrial training opportunities are provided through the placement cell.",
+
+    "facilities": "Library, Hostels, Transport, Laboratories, Sports, Auditorium, Canteen, Wi-Fi Campus",
+    "hostel": "Separate hostels for boys and girls with Wi-Fi and security",
+    "library": "Well-equipped central and digital library",
+    "transport": "College bus facility from major locations in Coimbatore",
+    "medical": "On-campus first-aid facility with quick access to nearby hospitals",
+
+    "events": "Technical symposiums, cultural programs, NSS activities, workshops, and annual fests",
+
+    "bonafide": "Bonafide and Transfer Certificates can be applied through the College Office (Information Center – IC).",
+
+    "grievance": (
+        "DAIT has a Student Grievance Redressal Committee (SGRC). "
+        "Complaints can be submitted via the college website portal, "
+        "email: antiraggingcell@dhaanishcollege.in, "
+        "or helpline numbers: 83449 16000 / 86000 58000."
+    ),
+
+    "portal": "Student Portal (ERP) and Learning Management System (LMS) are available for students.",
+
+    "discipline": "Strict discipline is maintained to ensure a safe and professional environment.",
+    "ragging": "Zero-tolerance anti-ragging policy is strictly followed.",
+
+    "reach": "From Gandhipuram or Ukkadam Bus Stand, take Bus No. 96 or 48 towards K.G. Chavadi.",
+
+    "contact": "Website: https://dhaanish.com | Phone & email details are available on the official website."
 }
 
 # ------------------ CHATBOT LOGIC ------------------
@@ -65,72 +103,107 @@ def chatbot_reply(user_input):
     text = user_input.lower()
 
     if text in ["hi", "hello", "hey", "hai"]:
-        return "😊 Hello! Welcome to **DAIT College Assistant**. How can I help you?"
+        return "😊 Hello! Welcome to **DAIT College Assistant**."
 
-    if "who are you" in text:
+    if "who are you" in text or "assistant" in text:
         return college_info["assistant"]
 
-    if "college name" in text or "dait" in text:
-        return f"🎓  **{college_info['college_name']}**"
+    if "college name" in text:
+        return f"🎓 {college_info['college_name']}"
 
-    if "location" in text:
-        return f"📍 Location:  {college_info['location']}"
+    if "location" in text or "where" in text:
+        return f"📍 {college_info['location']}"
+
+    if "affiliated" in text or "aicte" in text:
+        return f"🏛️ {college_info['type']}"
 
     if "course" in text or "degree" in text:
-        return f"📘 Courses Offered:  {college_info['courses']}"
+        return f"📘 {college_info['courses']}"
 
-    if "department" in text:
-        return f"🏫 Departments:  {college_info['departments']}"
+    if "pg" in text:
+        return f"🎓 {college_info['pg_courses']}"
 
-    if "placement" in text:
-        return f"💼 Placements:  {college_info['placements']}"
+    if "duration" in text:
+        return f"⏳ {college_info['duration']}"
 
-    if "hostel" in text:
-        return f"🏠 Hostel:  {college_info['hostel']}"
-
-    if "library" in text:
-        return f"📚 Library:  {college_info['library']}"
-
-    if "facility" in text:
-        return f"🏀 Facilities:  {college_info['facilities']}"
-
-    if "fee" in text:
-        return f"💰 Fees:  {college_info['fees']}"
-
-    if "admission" in text or "join" in text:
-        return f"📝 Admission:  {college_info['admission']}"
-
-    if "scholarship" in text:
-        return f"🎓 Scholarship:  {college_info['scholarship']}"
-
-    if "contact" in text:
-        return f"📞 Contact:  {college_info['contact']}"
-
-    if "reach" in text:
-        return f"🚌 Reach:  {college_info['reach']}"
-
-    if "medical" in text:
-        return f"🏥 Medical:  {college_info['medical']}"
+    if "admission" in text or "apply" in text:
+        return f"📝 {college_info['admission']}"
 
     if "eligibility" in text:
-        return f"🧑‍🎓 Eligibility:  {college_info['eligibility']}"
+        return f"🧑‍🎓 {college_info['eligibility']}"
+
+    if "document" in text:
+        return f"📄 {college_info['documents']}"
+
+    if "fee" in text:
+        return f"💰 {college_info['fees']}"
+
+    if "scholarship" in text:
+        return f"🎓 {college_info['scholarship']}"
+
+    if "department" in text or "branch" in text:
+        return f"🏫 {college_info['departments']}"
+
+    if "attendance" in text:
+        return f"📊 {college_info['attendance']}"
+
+    if "exam" in text:
+        return f"📝 {college_info['exam_rules']}"
+
+    if "placement" in text:
+        return f"💼 {college_info['placements']}\n📦 {college_info['packages']}"
+
+    if "company" in text or "recruiter" in text:
+        return f"🏢 {college_info['companies']}"
+
+    if "internship" in text:
+        return f"🧑‍💻 {college_info['internship']}"
+
+    if "facility" in text:
+        return f"🏀 {college_info['facilities']}"
+
+    if "hostel" in text:
+        return f"🏠 {college_info['hostel']}"
+
+    if "library" in text:
+        return f"📚 {college_info['library']}"
+
+    if "transport" in text or "bus" in text:
+        return f"🚌 {college_info['transport']}"
+
+    if "medical" in text:
+        return f"🏥 {college_info['medical']}"
+
+    if "event" in text or "fest" in text:
+        return f"🎉 {college_info['events']}"
+
+    if "bonafide" in text or "tc" in text:
+        return f"📑 {college_info['bonafide']}"
+
+    if "grievance" in text or "complaint" in text:
+        return f"⚖️ {college_info['grievance']}"
+
+    if "portal" in text or "lms" in text:
+        return f"💻 {college_info['portal']}"
 
     if "ragging" in text:
-        return f"😠 Ragging:  {college_info['ragging']}"
+        return f"🚫 {college_info['ragging']}"
 
-    if "discipline" in text:
-        return f"🧑‍💼 Discipline:  {college_info['discpline']}"
+    if "discipline" in text or "rule" in text:
+        return f"🧑‍💼 {college_info['discipline']}"
 
-    if "located" in text:
-        return f"📍 Location:  {college_info['location']}"
+    if "contact" in text:
+        return f"📞 {college_info['contact']}"
 
-    return "❌ I can answer only **DAIT College-related questions**."
+    if "reach" in text:
+        return f"📍 {college_info['reach']}"
+
+    return "❌ Please ask questions related to **DAIT College** only."
 
 # ------------------ UI ------------------
 st.markdown("<div class='chat-box'>", unsafe_allow_html=True)
-
 st.title("🎓 DAIT College Assistant")
-st.caption("Ask anything about Dhaanish Ahmed Institute of Technology")
+st.caption("Official College Website Chatbot")
 
 if "messages" not in st.session_state:
     st.session_state.messages = []
@@ -144,7 +217,6 @@ if user_input:
     st.session_state.messages.append(("user", user_input))
     reply = chatbot_reply(user_input)
     st.session_state.messages.append(("assistant", reply))
-
     st.chat_message("user").write(user_input)
     st.chat_message("assistant").write(reply)
 
