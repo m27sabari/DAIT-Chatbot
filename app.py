@@ -34,7 +34,16 @@ set_background("background.jpg")
 
 # ------------------ COLLEGE DATA ------------------
 college_info = {
-    "name": "Dhaanish Ahmed Institute of Technology (DAIT)",
+    "college name": "Dhaanish Ahmed Institute of Technology (DAIT)",
+    "who are you": "I an your DAIT assistant,How can i help you ?",
+    "fees","fee":"The fee structure varies by course and is as per Anna University and Management norms,so kindly contact our admission cell.",
+    "join": "you can join in our college by Government Quata and Management Quata.",
+    "discipline","rules": "The college follows strict discipline to ensure a safe and focused learning environment",
+    "ragging" : "The campus follows a zero-tolerance anti-ragging policy",
+    "medical facilities" : "Basic medical and first-aid facilities are avilabe on campus, We have focused on our students Health",
+    "Reachcollege" : "First you come to Coimbatore Gandhipuram or Ukkadam Bus stand and here always bus no:96 or bus no:48 are availabe,you can reach the college by bus no:96 and 48.",
+    "scholarship": "Government and management scholarships are available for eligible students",
+    "eligiblity": "Candidates must have completed higher secondary education or Diplamo with  required subjects as per Anna Univercity",
     "location": "KG Chavadi, Coimbatore, Tamil Nadu",
     "type": "Private Engineering College",
     "courses": "B.E, B.Tech",
@@ -43,11 +52,11 @@ college_info = {
     "placements": "Training & Placement Cell with good placement support",
     "hostel": "Separate hostels for boys and girls with Good WIFI facilities",
     "library": "Well-equipped digital library",
-    "contact": "https://dhaanish.com"
+    "contact": "students can contact the college thruogh phone,email,or official website: https://dhaanish.com"
 }
 
 college_keywords = [
-    "college", "dait", "course", "department", "placement",
+    "college name", " "dait", "course", "department", "placement",
     "hostel", "library", "facility", "admission", "location"
 ]
 
