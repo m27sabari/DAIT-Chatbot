@@ -70,7 +70,7 @@ college_info = {
     "attendance": "Minimum 75% attendance is mandatory as per Anna University norms.",
     "exam_rules": "All examinations are conducted as per Anna University regulations.",
 
-    "placements": "Dedicated Training & Placement Cell with strong industry support.",
+    "placements": "Dedicated Training & Placement Cell with strong industry support with 100% Placements.",
     "packages": "Highest package: 25 LPA | Average package: 9 LPA",
     "companies": (
         "Major recruiters include Wipro, Hexaware, TCS, Zoho, Emerson, Quest Global, "
