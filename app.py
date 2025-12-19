@@ -113,7 +113,7 @@ def chatbot_reply(user_input):
     if "about college" in text or "college details" in text or "tell me about" in text or "brief" in text:
         return f"ℹ️ {college_info['aboutcollege']}"
 
-    if "about dhaanish" in text or "about your college" in text:
+    if "about dhaanish" in text or "about your college" in text or "about the college" in text:
         return f"ℹ️ {college_info['aboutcollege']}"
 
     if text in ["hi", "hello", "hey", "hai"]:
